@@ -8,7 +8,7 @@ Currently does not support interaction with the web page, but it might be added 
 # Building
 
 Make sure you have necessary dependencies installed, which are obs-studio and qt5 and qt5-webkit
-development packages. You may need to set `OBS_INCLUDE` and `QT5_INCLUDE` env variables (see Makefile).
+development packages. You may need to set `OBS_INCLUDE` env variable (see Makefile).
 
 Run `make` in the obs-qtwebkit directory to build the plugin.
 

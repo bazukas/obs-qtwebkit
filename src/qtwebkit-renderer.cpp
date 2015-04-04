@@ -21,10 +21,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <fcntl.h>
 #include <pthread.h>
 
-#include <QtWidgets/QApplication>
-#include <QtWebKitWidgets/QWebPage>
-#include <QtWebKitWidgets/QWebFrame>
-#include <QtGui/QPainter>
+#include <QApplication>
+#include <QWebPage>
+#include <QWebFrame>
+#include <QPainter>
 
 #define SHM_NAME "/obsqtwebkit"
 
