@@ -1,5 +1,9 @@
+ifndef OBS_INCLUDE
 OBS_INCLUDE = /usr/include/obs
+endif
+ifndef QT5_INCLUDE
 QT5_INCLUDE = /usr/include/qt
+endif
 
 CXXFLAGS = -std=c++11 -Wall -g -fPIC -I$(OBS_INCLUDE) -I$(QT5_INCLUDE) -I./src
 CXX      = g++
