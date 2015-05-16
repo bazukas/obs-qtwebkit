@@ -6,7 +6,8 @@ CXXFLAGS = -std=c++11 -Wall -g -fPIC -I$(OBS_INCLUDE) -I./src $(shell pkg-config
 CXX      = g++
 RM       = /bin/rm -rf
 LDFLAGS  = 
-LDLIBS   = -lobs $(shell pkg-config --libs Qt5WebKitWidgets) -lrt
+LDLIBS_LIB   = -lobs -lrt
+LDLIBS_RENDERER   = $(shell pkg-config --libs Qt5WebKitWidgets) -lrt
 
 LIB = build/qtwebkit-browser.so
 LIB_OBJ = build/qtwebkit-main.o build/qtwebkit-source.o build/qtwebkit-manager.o
@@ -31,10 +32,10 @@ install:
 	cp -r $(PLUGIN_BUILD_DIR) $(PLUGIN_INSTALL_DIR)
 
 $(RENDERER): $(RENDERER_OBJ)
-	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	$(CXX) $(LDFLAGS) $^ $(LDLIBS_RENDERER) -o $@
 
 $(LIB): $(LIB_OBJ)
-	$(CXX) -shared $(LDFLAGS) $^ $(LDLIBS) -o $@
+	$(CXX) -shared $(LDFLAGS) $^ $(LDLIBS_LIB) -o $@
 
 build/%.o: src/%.cpp
 	$(CXX) -c $(CXXFLAGS) $< -o $@
