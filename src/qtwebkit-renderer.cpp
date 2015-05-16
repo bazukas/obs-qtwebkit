@@ -65,6 +65,10 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 	QWebPage page;
 
+	QPalette palette = page.palette();
+	palette.setBrush(QPalette::Base, Qt::transparent);
+	page.setPalette(palette);
+
 	page.mainFrame()->setUrl(QUrl::fromUserInput(argv[1]));
 	page.setViewportSize(QSize(width, height));
 	page.mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
