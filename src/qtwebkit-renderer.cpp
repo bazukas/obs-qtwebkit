@@ -84,6 +84,7 @@ int main(int argc, char *argv[])
 		app.processEvents();
 
 		pthread_mutex_lock(&data->mutex);
+		image.fill(0);
 		page.mainFrame()->render(&painter, QWebFrame::ContentsLayer);
 		pthread_mutex_unlock(&data->mutex);
 
