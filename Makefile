@@ -5,7 +5,7 @@ endif
 CXXFLAGS = -std=c++11 -Wall -g -fPIC -I$(OBS_INCLUDE) -I./src $(shell pkg-config --cflags Qt5WebKitWidgets)
 CXX      = g++
 RM       = /bin/rm -rf
-LDFLAGS  = 
+LDFLAGS  = -L$(OBS_LIB)
 LDLIBS_LIB   = -lobs -lrt
 LDLIBS_RENDERER   = $(shell pkg-config --libs Qt5WebKitWidgets) -lrt
 
