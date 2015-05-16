@@ -1,6 +1,9 @@
 ifndef OBS_INCLUDE
 OBS_INCLUDE = /usr/include/obs
 endif
+ifndef OBS_LIB
+OBS_LIB = /usr/lib
+endif
 
 CXXFLAGS = -std=c++11 -Wall -g -fPIC -I$(OBS_INCLUDE) -I./src $(shell pkg-config --cflags Qt5WebKitWidgets)
 CXX      = g++
