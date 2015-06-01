@@ -38,6 +38,7 @@ private:
 private:
 	int fd = -1;
 	int pid = 0;
+	int uid = 0;
 
 	uint32_t width, height, fps;
 

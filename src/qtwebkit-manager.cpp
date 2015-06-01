@@ -34,7 +34,10 @@ QtWebkitManager::QtWebkitManager(char *url, uint32_t width, uint32_t height, uin
 {
 	pthread_mutexattr_t attrmutex;
 
-	fd = shm_open(SHM_NAME, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+	uid = rand();
+	char shm_name[50];
+	snprintf(shm_name, 50, "%s%d", SHM_NAME, uid);
+	fd = shm_open(shm_name, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
 	if (fd == -1) {
 		blog(LOG_ERROR, "shm_open error");
 		return;
@@ -66,8 +69,11 @@ QtWebkitManager::~QtWebkitManager()
 	pthread_mutex_destroy(&data->mutex);
 	if (data != NULL && data != MAP_FAILED)
 		munmap(data, sizeof(struct shared_data) + data_size);
-	if (fd != -1)
-		shm_unlink(SHM_NAME);
+	if (fd != -1) {
+		char shm_name[50];
+		snprintf(shm_name, 50, "%s%d", SHM_NAME, uid);
+		shm_unlink(shm_name);
+	}
 }
 
 void QtWebkitManager::SetUrl(char *url)
@@ -82,6 +88,7 @@ void QtWebkitManager::SpawnRenderer(char *url)
 	char width_buf[32];
 	char height_buf[32];
 	char fps_buf[32];
+	char uid_buf[32];
 	char *s;
 	const char *file = obs_get_module_binary_path(obs_current_module());
 	strncpy(renderer, file, 512);
@@ -92,7 +99,8 @@ void QtWebkitManager::SpawnRenderer(char *url)
 	snprintf(width_buf, 32, "%d", width);
 	snprintf(height_buf, 32, "%d", height);
 	snprintf(fps_buf, 32, "%d", fps);
-	char *argv[] = { renderer, url, width_buf, height_buf, fps_buf, NULL };
+	snprintf(uid_buf, 32, "%d", uid);
+	char *argv[] = { renderer, url, width_buf, height_buf, fps_buf, uid_buf, NULL };
 	pid = fork();
 	if (pid == 0)
 		execv(renderer, argv);

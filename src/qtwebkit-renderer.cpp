@@ -42,10 +42,13 @@ void term(int signum)
 	done = 1;
 }
 
-void init_shared_data(int width, int height)
+void init_shared_data(int width, int height, char *suffix)
 {
+	char shm_name[50];
+	snprintf(shm_name, 50, "%s%s", SHM_NAME, suffix);
+
 	size_t data_size = width * height * 4;
-	fd = shm_open(SHM_NAME, O_RDWR, S_IRUSR | S_IWUSR);
+	fd = shm_open(shm_name, O_RDWR, S_IRUSR | S_IWUSR);
 	data = (struct shared_data *) mmap(NULL, sizeof(struct shared_data) + data_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 }
 
@@ -56,11 +59,11 @@ int main(int argc, char *argv[])
 	action.sa_handler = term;
 	sigaction(SIGTERM, &action, NULL);
 
-	int fps = atoi(argv[4]);
 	int width = atoi(argv[2]);
 	int height = atoi(argv[3]);
-
-	init_shared_data(atoi(argv[2]), atoi(argv[3]));
+	int fps = atoi(argv[4]);
+	char *suffix = argv[5];
+	init_shared_data(atoi(argv[2]), atoi(argv[3]), suffix);
 
 	QApplication app(argc, argv);
 	QWebPage page;
