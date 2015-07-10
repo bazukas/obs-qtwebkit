@@ -20,7 +20,8 @@ RENDERER_SRC = src/qtwebkit-renderer.cpp
 RENDERER_OBJ = build/qtwebkit-renderer.o
 
 PLUGIN_BUILD_DIR = build/qtwebkit-browser
-PLUGIN_INSTALL_DIR = ~/.obs-studio/plugins
+PLUGIN_INSTALL_DIR = ~/.config/obs-studio/plugins
+PLUGIN_LOCALE_DIR = data
 
 all: plugin
 
@@ -28,6 +29,7 @@ all: plugin
 plugin: $(LIB) $(RENDERER)
 	mkdir -p $(PLUGIN_BUILD_DIR)/bin
 	cp $(LIB) $(RENDERER) $(PLUGIN_BUILD_DIR)/bin
+	cp -r $(PLUGIN_LOCALE_DIR) $(PLUGIN_BUILD_DIR)/data
 
 .PHONY: install
 install:

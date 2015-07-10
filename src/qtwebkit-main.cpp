@@ -26,7 +26,7 @@ OBS_MODULE_USE_DEFAULT_LOCALE("qtwebkit-source", "en-US")
 
 static const char *qtwebkit_get_name(void)
 {
-	return obs_module_text("QtWebKit Browser");
+	return obs_module_text("QtWebKitBrowser");
 }
 
 static void *qtwebkit_create(obs_data_t *settings, obs_source_t *source)
@@ -80,10 +80,10 @@ static obs_properties_t *qtwebkit_get_properties(void *)
 	obs_properties_t *props = obs_properties_create();
 
 	obs_property_t *prop = obs_properties_add_bool(props, "is_local_file",
-			obs_module_text("Local file"));
+			obs_module_text("LocalFile"));
 
 	obs_property_set_modified_callback(prop, is_local_file_modified);
-	obs_properties_add_path(props, "local_file", obs_module_text("Local file"),
+	obs_properties_add_path(props, "local_file", obs_module_text("LocalFile"),
 			OBS_PATH_FILE, "*.*", nullptr);
 	obs_properties_add_text(props, "url", obs_module_text("URL"), OBS_TEXT_DEFAULT);
 
