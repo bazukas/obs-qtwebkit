@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <signal.h>
 #include <unistd.h>
 #include <sys/mman.h>
+#include <sys/inotify.h>
 #include <fcntl.h>
 #include <pthread.h>
 
@@ -37,6 +38,9 @@ static volatile sig_atomic_t done = 0;
 static int fd;
 static struct shared_data *data;
 
+static int in_fd;
+static char buf[sizeof(struct inotify_event)];
+
 void term(int signum)
 {
 	done = 1;
@@ -50,6 +54,23 @@ void init_shared_data(int width, int height, char *suffix)
 	size_t data_size = width * height * 4;
 	fd = shm_open(shm_name, O_RDWR, S_IRUSR | S_IWUSR);
 	data = (struct shared_data *) mmap(NULL, sizeof(struct shared_data) + data_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+}
+
+void uninit_shared_data(int width, int height)
+{
+	size_t data_size = width * height * 4;
+	munmap(data, sizeof(struct shared_data) + data_size);
+}
+
+void init_inotify(char *file)
+{
+	in_fd = inotify_init1(IN_NONBLOCK);
+	inotify_add_watch(in_fd, file, IN_MODIFY);
+}
+
+void uninit_inotify()
+{
+	close(in_fd);
 }
 
 int main(int argc, char *argv[])
@@ -72,7 +93,8 @@ int main(int argc, char *argv[])
 	palette.setBrush(QPalette::Base, Qt::transparent);
 	page.setPalette(palette);
 
-	page.mainFrame()->setUrl(QUrl::fromUserInput(argv[1]));
+	const QUrl url = QUrl::fromUserInput(argv[1]);
+	page.mainFrame()->setUrl(url);
 	page.setViewportSize(QSize(width, height));
 	page.mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
 	page.mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
@@ -83,6 +105,10 @@ int main(int argc, char *argv[])
 	QPainter painter(&image);
 	pthread_mutex_unlock(&data->mutex);
 
+	if (url.isLocalFile()) {
+		init_inotify(argv[1]);
+	}
+
 	while (!done) {
 		app.processEvents();
 
@@ -91,8 +117,19 @@ int main(int argc, char *argv[])
 		page.mainFrame()->render(&painter, QWebFrame::ContentsLayer);
 		pthread_mutex_unlock(&data->mutex);
 
+		// reload file if changed
+		if (url.isLocalFile() && -1 != read(in_fd, (void *) buf, sizeof(buf))) {
+			page.mainFrame()->setUrl(url);
+		}
+
 		usleep(1000000 / fps);
 	}
+
+	if (url.isLocalFile()) {
+		uninit_inotify();
+	}
+
+	uninit_shared_data(atoi(argv[2]), atoi(argv[3]));
 
 	return 0;
 }
