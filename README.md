@@ -14,7 +14,7 @@ Run `make` in the obs-qtwebkit directory to build the plugin.
 
 # Installing
 
-Run `make install` to copy plugin binaries into $HOME/.obs-studio/plugins.
+Run `make install` to copy plugin binaries into $HOME/.config/obs-studio/plugins.
 
 # Design choices
 
