@@ -29,6 +29,16 @@ static const char *qtwebkit_get_name(void)
 	return obs_module_text("QtWebKitBrowser");
 }
 
+static void reload_hotkey_pressed(void *data, obs_hotkey_id id, obs_hotkey_t *key, bool pressed)
+{
+	UNUSED_PARAMETER(id);
+	UNUSED_PARAMETER(key);
+	UNUSED_PARAMETER(pressed);
+
+	QtWebkitSource *ws = static_cast<QtWebkitSource *>(data);
+	ws->Reload();
+}
+
 static bool is_local_file_modified(obs_properties_t *props, obs_property_t *prop,
 		obs_data_t *settings)
 {
@@ -101,12 +111,15 @@ static void *qtwebkit_create(obs_data_t *settings, obs_source_t *source)
 	UNUSED_PARAMETER(settings);
 	QtWebkitSource *ws = new QtWebkitSource(source);
 	ws->UpdateSettings(settings);
+	ws->reload_key = obs_hotkey_register_source(source, "qtwebkit.reload", obs_module_text("Reload"),
+			reload_hotkey_pressed, ws);
 	return ws;
 }
 
 static void qtwebkit_destroy(void *data)
 {
 	QtWebkitSource *ws = static_cast<QtWebkitSource *>(data);
+	obs_hotkey_unregister(ws->reload_key);
 	delete ws;
 }
 

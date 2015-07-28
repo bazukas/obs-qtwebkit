@@ -37,6 +37,9 @@ public:
 	void Reload();
 private:
 	void UpdatePage(bool resize, bool fps_change);
+
+public:
+	obs_hotkey_id reload_key;
 private:
 	bool isLocalFile;
 	char *url;
