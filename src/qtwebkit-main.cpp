@@ -75,6 +75,17 @@ static bool is_local_file_modified(obs_properties_t *props, obs_property_t *prop
 	return true;
 }
 
+static bool reload_button_clicked(obs_properties_t *props,
+		obs_property_t *property, void *data)
+{
+	UNUSED_PARAMETER(props);
+	UNUSED_PARAMETER(property);
+
+	QtWebkitSource *ws = static_cast<QtWebkitSource *>(data);
+	ws->Reload();
+	return true;
+}
+
 static obs_properties_t *qtwebkit_get_properties(void *)
 {
 	obs_properties_t *props = obs_properties_create();
@@ -90,6 +101,8 @@ static obs_properties_t *qtwebkit_get_properties(void *)
 	obs_properties_add_int(props, "width", obs_module_text("Width"), 1, 4096, 1);
 	obs_properties_add_int(props, "height", obs_module_text("Height"), 1, 4096, 1);
 	obs_properties_add_int(props, "fps", obs_module_text("FPS"), 1, 60, 1);
+
+	obs_properties_add_button(props, "reload", obs_module_text("Reload"), reload_button_clicked);
 
 	return props;
 }

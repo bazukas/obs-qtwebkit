@@ -121,3 +121,10 @@ void QtWebkitSource::RenderTexture(gs_effect_t *effect)
 
 	UnlockTexture();
 }
+
+void QtWebkitSource::Reload()
+{
+	if (manager)
+		delete manager;
+	manager = new QtWebkitManager(url, width, height, fps);
+}

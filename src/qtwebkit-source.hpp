@@ -34,6 +34,7 @@ public:
 	void PrepareTexture();
 	void LockTexture();
 	void UnlockTexture();
+	void Reload();
 private:
 	void UpdatePage(bool resize, bool fps_change);
 private:
