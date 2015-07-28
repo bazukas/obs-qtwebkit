@@ -40,10 +40,17 @@ static struct shared_data *data;
 
 static int in_fd;
 static char buf[sizeof(struct inotify_event)];
+static volatile sig_atomic_t refresh = 0;
 
 void term(int signum)
 {
 	done = 1;
+}
+
+void file_changed(int signum)
+{
+	read(in_fd, (void *) buf, sizeof(buf)); // right now don't really care what we get
+	refresh = 1;
 }
 
 void init_shared_data(int width, int height, char *suffix)
@@ -66,6 +73,13 @@ void init_inotify(char *file)
 {
 	in_fd = inotify_init1(IN_NONBLOCK);
 	inotify_add_watch(in_fd, file, IN_MODIFY);
+	fcntl(in_fd, F_SETFL, O_ASYNC);
+	fcntl(in_fd, F_SETOWN, getpid());
+	struct sigaction action;
+
+	memset(&action, 0, sizeof(struct sigaction));
+	action.sa_handler = file_changed;
+	sigaction(SIGIO, &action, NULL);
 }
 
 void uninit_inotify()
@@ -118,7 +132,8 @@ int main(int argc, char *argv[])
 		pthread_mutex_unlock(&data->mutex);
 
 		// reload file if changed
-		if (url.isLocalFile() && -1 != read(in_fd, (void *) buf, sizeof(buf))) {
+		if (refresh) {
+			refresh = 0;
 			page.mainFrame()->setUrl(url);
 		}
 
