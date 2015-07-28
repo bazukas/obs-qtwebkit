@@ -29,38 +29,6 @@ static const char *qtwebkit_get_name(void)
 	return obs_module_text("QtWebKitBrowser");
 }
 
-static void *qtwebkit_create(obs_data_t *settings, obs_source_t *source)
-{
-	UNUSED_PARAMETER(settings);
-	QtWebkitSource *ws = new QtWebkitSource(source);
-	ws->UpdateSettings(settings);
-	return ws;
-}
-
-static void qtwebkit_destroy(void *data)
-{
-	QtWebkitSource *ws = static_cast<QtWebkitSource *>(data);
-	delete ws;
-}
-
-static void qtwebkit_update(void *data, obs_data_t *settings)
-{
-	QtWebkitSource *ws = static_cast<QtWebkitSource *>(data);
-	ws->UpdateSettings(settings);
-}
-
-static uint32_t qtwebkit_get_width(void *data)
-{
-	QtWebkitSource *ws = static_cast<QtWebkitSource *>(data);
-	return ws->GetWidth();
-}
-
-static uint32_t qtwebkit_get_height(void *data)
-{
-	QtWebkitSource *ws = static_cast<QtWebkitSource *>(data);
-	return ws->GetHeight();
-}
-
 static bool is_local_file_modified(obs_properties_t *props, obs_property_t *prop,
 		obs_data_t *settings)
 {
@@ -126,6 +94,38 @@ static void qtwebkit_render(void *data, gs_effect_t *effect)
 {
 	QtWebkitSource *ws = static_cast<QtWebkitSource *>(data);
 	ws->RenderTexture(effect);
+}
+
+static void *qtwebkit_create(obs_data_t *settings, obs_source_t *source)
+{
+	UNUSED_PARAMETER(settings);
+	QtWebkitSource *ws = new QtWebkitSource(source);
+	ws->UpdateSettings(settings);
+	return ws;
+}
+
+static void qtwebkit_destroy(void *data)
+{
+	QtWebkitSource *ws = static_cast<QtWebkitSource *>(data);
+	delete ws;
+}
+
+static void qtwebkit_update(void *data, obs_data_t *settings)
+{
+	QtWebkitSource *ws = static_cast<QtWebkitSource *>(data);
+	ws->UpdateSettings(settings);
+}
+
+static uint32_t qtwebkit_get_width(void *data)
+{
+	QtWebkitSource *ws = static_cast<QtWebkitSource *>(data);
+	return ws->GetWidth();
+}
+
+static uint32_t qtwebkit_get_height(void *data)
+{
+	QtWebkitSource *ws = static_cast<QtWebkitSource *>(data);
+	return ws->GetHeight();
 }
 
 bool obs_module_load(void)
