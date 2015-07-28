@@ -29,7 +29,7 @@ all: plugin
 plugin: $(LIB) $(RENDERER)
 	mkdir -p $(PLUGIN_BUILD_DIR)/bin
 	cp $(LIB) $(RENDERER) $(PLUGIN_BUILD_DIR)/bin
-	cp -r $(PLUGIN_LOCALE_DIR) $(PLUGIN_BUILD_DIR)/data
+	cp -r $(PLUGIN_LOCALE_DIR) $(PLUGIN_BUILD_DIR)
 
 .PHONY: install
 install:
