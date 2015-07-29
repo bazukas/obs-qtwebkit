@@ -106,12 +106,13 @@ int main(int argc, char *argv[])
 	QPalette palette = page.palette();
 	palette.setBrush(QPalette::Base, Qt::transparent);
 	page.setPalette(palette);
+	page.settings()->setUserStyleSheetUrl(QUrl::fromUserInput(argv[6]));
 
 	const QUrl url = QUrl::fromUserInput(argv[1]);
-	page.mainFrame()->setUrl(url);
 	page.setViewportSize(QSize(width, height));
 	page.mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
 	page.mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+	page.mainFrame()->setUrl(url);
 
 	pthread_mutex_lock(&data->mutex);
 	QImage image(&data->data, width, height, QImage::Format_RGBA8888);

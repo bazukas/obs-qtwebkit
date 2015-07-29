@@ -79,6 +79,8 @@ static obs_properties_t *qtwebkit_get_properties(void *)
 	obs_properties_add_int(props, "width", obs_module_text("Width"), 1, 4096, 1);
 	obs_properties_add_int(props, "height", obs_module_text("Height"), 1, 4096, 1);
 	obs_properties_add_int(props, "fps", obs_module_text("FPS"), 1, 60, 1);
+	obs_properties_add_path(props, "css_file", obs_module_text("CustomCSS"),
+			OBS_PATH_FILE, "*.css", nullptr);
 
 	obs_properties_add_button(props, "reload", obs_module_text("Reload"), reload_button_clicked);
 

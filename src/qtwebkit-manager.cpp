@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define SHM_NAME "/obsqtwebkit"
 
-QtWebkitManager::QtWebkitManager(char *url, uint32_t width, uint32_t height, uint32_t fps):
+QtWebkitManager::QtWebkitManager(char *url, uint32_t width, uint32_t height, uint32_t fps, char *css):
 	width(width), height(height), fps(fps)
 {
 	pthread_mutexattr_t attrmutex;
@@ -59,7 +59,7 @@ QtWebkitManager::QtWebkitManager(char *url, uint32_t width, uint32_t height, uin
 	pthread_mutexattr_setpshared(&attrmutex, PTHREAD_PROCESS_SHARED);
 	pthread_mutex_init(&data->mutex, &attrmutex);
 
-	SpawnRenderer(url);
+	SpawnRenderer(url, css);
 }
 
 QtWebkitManager::~QtWebkitManager()
@@ -76,13 +76,13 @@ QtWebkitManager::~QtWebkitManager()
 	}
 }
 
-void QtWebkitManager::SetUrl(char *url)
+void QtWebkitManager::SetUrl(char *url, char *css)
 {
 	KillRenderer();
-	SpawnRenderer(url);
+	SpawnRenderer(url, css);
 }
 
-void QtWebkitManager::SpawnRenderer(char *url)
+void QtWebkitManager::SpawnRenderer(char *url, char *css)
 {
 	char renderer[512];
 	char width_buf[32];
@@ -100,7 +100,10 @@ void QtWebkitManager::SpawnRenderer(char *url)
 	snprintf(height_buf, 32, "%d", height);
 	snprintf(fps_buf, 32, "%d", fps);
 	snprintf(uid_buf, 32, "%d", uid);
-	char *argv[] = { renderer, url, width_buf, height_buf, fps_buf, uid_buf, NULL };
+	if (!css) {
+		css = (char *) "";
+	}
+	char *argv[] = { renderer, url, width_buf, height_buf, fps_buf, uid_buf, css, NULL };
 	pid = fork();
 	if (pid == 0)
 		execv(renderer, argv);

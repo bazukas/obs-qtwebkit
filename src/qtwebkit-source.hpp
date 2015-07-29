@@ -46,6 +46,7 @@ private:
 	uint32_t width;
 	uint32_t height;
 	uint32_t fps;
+	char *css;
 
 	obs_source_t *source;
 

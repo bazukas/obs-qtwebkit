@@ -69,9 +69,9 @@ void QtWebkitSource::UpdatePage(bool resize, bool fps_change)
 	if (!manager || resize || fps_change) {
 		if (manager)
 			delete manager;
-		manager = new QtWebkitManager(url, width, height, fps);
+		manager = new QtWebkitManager(url, width, height, fps, css);
 	} else {
-		manager->SetUrl(url);
+		manager->SetUrl(url, css);
 	}
 }
 
@@ -85,6 +85,7 @@ void QtWebkitSource::UpdateSettings(obs_data_t *settings)
 	width = (uint32_t) obs_data_get_int(settings, "width");
 	height = (uint32_t) obs_data_get_int(settings, "height");
 	fps = (uint32_t) obs_data_get_int(settings, "fps");
+	css = (char *) obs_data_get_string(settings, "css_file");
 	UpdatePage(old_width != width || old_height != height, old_fps != fps);
 }
 
@@ -126,5 +127,5 @@ void QtWebkitSource::Reload()
 {
 	if (manager)
 		delete manager;
-	manager = new QtWebkitManager(url, width, height, fps);
+	manager = new QtWebkitManager(url, width, height, fps, css);
 }

@@ -26,15 +26,15 @@ struct shared_data {
 
 class QtWebkitManager {
 public:
-	QtWebkitManager(char *url, uint32_t width, uint32_t height, uint32_t fps);
+	QtWebkitManager(char *url, uint32_t width, uint32_t height, uint32_t fps, char *css);
 	~QtWebkitManager();
 	uint8_t *GetData() { return &data->data; }
 	void Lock();
 	void UnLock();
-	void SetUrl(char *url);
+	void SetUrl(char *url, char *css);
 private:
 	void KillRenderer();
-	void SpawnRenderer(char *url);
+	void SpawnRenderer(char *url, char *css);
 private:
 	int fd = -1;
 	int pid = 0;
