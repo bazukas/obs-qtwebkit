@@ -107,6 +107,7 @@ int main(int argc, char *argv[])
 	palette.setBrush(QPalette::Base, Qt::transparent);
 	page.setPalette(palette);
 	page.settings()->setUserStyleSheetUrl(QUrl::fromUserInput(argv[6]));
+	page.settings()->setObjectCacheCapacities(0, 0, 0);
 
 	const QUrl url = QUrl::fromUserInput(argv[1]);
 	page.setViewportSize(QSize(width, height));
