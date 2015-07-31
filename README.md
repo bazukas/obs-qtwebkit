@@ -16,6 +16,10 @@ Run `make` in the obs-qtwebkit directory to build the plugin.
 
 Run `make install` to copy plugin binaries into $HOME/.config/obs-studio/plugins.
 
+Older versions of obs-studio look for plugins in $HOME/.obs-studio/plugins directory.
+If you don't see "QtWebkit Browser" in available sources list, try copying qtwebkit-browser folder
+to that direcotry.
+
 # Design choices
 
 Rendering web pages is done using QWebFrame, which only works in the main thread. Because of that,
