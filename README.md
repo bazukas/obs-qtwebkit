@@ -11,14 +11,12 @@ Make sure you have necessary dependencies installed, which are obs-studio and qt
 development packages. You may need to set `OBS_INCLUDE` and `OBS_LIB` env variables (see Makefile).
 
 Run `make` in the obs-qtwebkit directory to build the plugin.
+If your OBS version is < 0.11.2, run `OBS_PLUGIN_BUILD_OLD=1 make`.
 
 # Installing
 
 Run `make install` to copy plugin binaries into $HOME/.config/obs-studio/plugins.
-
-Older versions of obs-studio look for plugins in $HOME/.obs-studio/plugins directory.
-If you don't see "QtWebkit Browser" in available sources list, try copying qtwebkit-browser folder
-to that direcotry.
+If your OBS version is < 0.11.1, run `OBS_PLUGIN_INSTALL_OLD=1 make`.
 
 # Design choices
 
