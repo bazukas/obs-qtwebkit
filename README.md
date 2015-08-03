@@ -16,7 +16,7 @@ If your OBS version is < 0.11.2, run `OBS_PLUGIN_BUILD_OLD=1 make`.
 # Installing
 
 Run `make install` to copy plugin binaries into $HOME/.config/obs-studio/plugins.
-If your OBS version is < 0.11.1, run `OBS_PLUGIN_INSTALL_OLD=1 make`.
+If your OBS version is < 0.11.1, run `OBS_PLUGIN_INSTALL_OLD=1 make install`.
 
 # Design choices
 
