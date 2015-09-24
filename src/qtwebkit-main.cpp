@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 OBS_DECLARE_MODULE()
 OBS_MODULE_USE_DEFAULT_LOCALE("qtwebkit-source", "en-US")
 
-static const char *qtwebkit_get_name(void)
+static const char *qtwebkit_get_name(void*)
 {
 	return obs_module_text("QtWebKitBrowser");
 }
