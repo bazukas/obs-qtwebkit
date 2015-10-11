@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/inotify.h>
+#include <sys/prctl.h>
 #include <fcntl.h>
 #include <pthread.h>
 
@@ -93,6 +94,9 @@ int main(int argc, char *argv[])
 	memset(&action, 0, sizeof(struct sigaction));
 	action.sa_handler = term;
 	sigaction(SIGTERM, &action, NULL);
+
+	// shutdown if parent process dies
+	prctl(PR_SET_PDEATHSIG, SIGTERM);
 
 	int width = atoi(argv[2]);
 	int height = atoi(argv[3]);
