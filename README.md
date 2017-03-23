@@ -1,3 +1,5 @@
+This plugin is deprecated and no longer maintained. Please see https://github.com/bazukas/obs-linuxbrowser
+
 # About
 
 This is a browser source plugin for obs-studio (https://github.com/jp9000/obs-studio) based
