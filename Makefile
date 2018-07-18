@@ -5,12 +5,12 @@ ifndef OBS_LIB
 OBS_LIB = /usr/lib
 endif
 
-CXXFLAGS = -std=c++11 -Wall -g -fPIC -I$(OBS_INCLUDE) -I./src $(shell pkg-config --cflags Qt5WebKitWidgets)
+CXXFLAGS = -std=c++11 -Wall -g -fPIC -I$(OBS_INCLUDE) -I./src $(shell pkg-config --cflags Qt5WebKitWidgets Qt5Widgets Qt5Core Qt5Gui)
 CXX      = g++
 RM       = /bin/rm -rf
 LDFLAGS  = -L$(OBS_LIB)
 LDLIBS_LIB   = -lobs -lrt
-LDLIBS_RENDERER   = $(shell pkg-config --libs Qt5WebKitWidgets) -lrt
+LDLIBS_RENDERER   = $(shell pkg-config --libs Qt5WebKitWidgets Qt5Core Qt5Gui Qt5Widgets Qt5WebKit) -lrt
 
 LIB = build/qtwebkit-browser.so
 LIB_OBJ = build/qtwebkit-main.o build/qtwebkit-source.o build/qtwebkit-manager.o
